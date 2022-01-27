@@ -15,7 +15,7 @@ const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var router = express.Router();
 const formatMessage = require('./utils/messages');
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 const { userJoin, getCurrentUser, userLeave, getRoomUsers, getUsers } = require('./utils/users');
 const { Socket } = require('dgram');
 const { database } = require("firebase-admin");
