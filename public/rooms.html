@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-TW" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8" />
+    <title>茶亭Cha-Ting</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <form id="main" class="ajax" method="POST" action="/room1.html">
+        <p><span> 房間列表</span></p><button type="button" id="reload">刷新</button>
+        <div id="roomlist"> </div>
+        <div>
+            <input type="text"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="room" name="room" class="minText" value="" placeholder=" " required/>
+            <label for="room">房號</label>
+        </div>
+        <button type="submit" value="加入聊天" class="btn">加入聊天</button>
+    </form>
+
+
+    <form action="" id="createRoom" class="ajax">
+        <p><span> 建立房間</span></p><button type="button" id="leave" class="leave">X</button>
+        <div>
+            <input type="text" id="name" name="name" class="minText" value="" placeholder=" " required/>
+            <label for="name">標題</label>
+        </div>
+        <div>
+            <button type="button" class="checkBox" id="lock">上鎖</button>
+            <input type="text"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="key" name="password" class="minText password" value="" placeholder=" " />
+            <label for="password" class="password">密碼</label>
+        </div>
+        <button type="button" id="hide" class="checkBox">公開</button>
+        
+        <button type="submit" value="開始聊天" class="btn">開始聊天</button>
+    </form>
+
+    <form action="" id="keyUI" class="ajax">
+        <p><span>輸入密碼</span></p><button type="button" id="leave2" class="leave">X</button>
+        <div>
+            <input type="text" id="KKey" name="name" class="minText" value="" placeholder=" " required/>
+            <label for="name">密碼</label>
+        </div>
+        <button type="submit" value="開始聊天" class="btn">開始聊天</button>
+    </form>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var Lock = false;
+        var isHide = -1;
+        var Rooms = [];
+        var socket = io();
+        
+        $('#keyUI').hide();
+        $('.password').hide();
+        $('#createRoom').hide();
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC8WYcM40gZWb7OSKv_IXO-z0g-9p75po",
+            authDomain: "undercover-b8b4f.firebaseapp.com",
+            projectId: "undercover-b8b4f",
+            storageBucket: "undercover-b8b4f.appspot.com",
+            messagingSenderId: "657020303413",
+            appId: "1:657020303413:web:8768b4a802f3a716d1d97c",
+            measurementId: "G-QNEWGRSRC3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(() => {
+            // Existing and future Auth states are now persisted in the current
+            // session only. Closing the window would clear any existing state even
+            // if a user forgets to sign out.
+            // ...
+            // New sign-in will be persisted with session persistence.
+            return firebase.auth().signInWithEmailAndPassword(email, password);
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+        });
+        const db = firebase.firestore();
+        var key = "";
+        var room = "";
+
+
+        socket.emit('loadRooms');
+        socket.on('getRooms',function(rooms){
+            Rooms = rooms;
+            $('#roomlist').html('');
+            for(var i = 0;i<rooms.length;i++){
+                
+                db.collection('rooms').doc(rooms[i]).get().then(doc => {
+                    n_room = doc.data()['room'];
+                    n_name = doc.data()['name'];
+                    n_hide = doc.data()['isHide'];
+                    return [n_room, n_name, n_hide]
+                }).then((room_info)=>{
+                    if(n_hide == 1){
+                        return;
+                    }
+                    var new_room = document.createElement('button');
+                    new_room.name = room_info[0];
+                    new_room.className = "roomBTN btn";
+                    new_room.innerHTML = "<p>#"+room_info[0]+"</p><br>"+ room_info[1];
+                    new_room.onclick = function (e) {
+                        var roomName = e.target.name;
+                        db.collection('rooms').doc(roomName).get().then(doc => {
+                            var key = doc.data()['key'];
+                            if(key != ""){
+                                room = roomName
+                                $('#keyUI').show()
+                            }
+                            else{
+                                firebase.auth().onAuthStateChanged(function(user) {
+                                    if(user) {
+                                        db.collection('users').doc(user.uid).update({
+                                            room: roomName,
+                                        }).then(function() {
+                                            window.location.href = "/room.html";
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                        
+                        return false;
+                    }
+                    $('#roomlist').append(new_room);
+                })
+                
+            }
+        })
+        
+        
+        $(document).ready(function () {
+            $('#keyUI').submit(function (e) {
+                db.collection('rooms').doc(room).get().then(doc => {
+                    var key = doc.data()['key'];
+                    if(key == $("#KKey").val()){
+                        firebase.auth().onAuthStateChanged(function(user) {
+                            if(user) {
+                                firebase.firestore().collection('users').doc(user.uid).update({
+                                    room: room,
+                                }).then(function() {
+                                    window.location.href = "/room.html";
+                                });
+                            }
+                        })
+                    }
+                    else{
+                        alert("密碼錯誤！ ");
+                    }
+                    
+                })
+                return false;
+                
+            })
+            $('#lock').click(function(e){
+                $('#lock').toggleClass('lock');
+                if($('#lock').hasClass('lock')){
+                    $('.password').show()
+                }
+                else{
+                    $('.password').hide()
+                    $('.password').val("");
+                }
+            })
+            $('#hide').click(function(e){
+                $('#hide').toggleClass('hide');
+                isHide *= -1;
+                if(isHide == 1){
+                    $('#hide').html("不公開");
+                }
+                else{
+                    $('#hide').html("公開");
+                }
+            })
+            $('#main').submit(function (e) {
+                room = $("#room").val();
+                socket.emit('loadRooms');
+                if(!Rooms.find(r => r == room)){
+                    $('#createRoom').show();
+                    $('#croom').val(room);
+                }
+                else{
+                    console.log('The room existed: '+ room)
+                    db.collection('rooms').doc(room).get().then(doc => {
+                        var key = doc.data()['key'];
+                    })
+                    if(key != null){
+                        room = $("#room").val();
+                        $('#keyUI').show()
+                    }
+                    else{
+                        firebase.auth().onAuthStateChanged(function(user) {
+                            if(user) {
+                                
+                                firebase.firestore().collection('users').doc(user.uid).update({
+                                    room: room,
+                                }).then(function() {
+                                    window.location.href = "/room.html";
+                                });
+                            }
+                        })
+                    }
+                    
+                    return false;
+                }
+                    return false;
+            })
+            $('#createRoom').submit(function (e) {
+                room = $("#room").val();
+                var key = $("#key").val();
+                var name = $("#name").val();
+                firebase.auth().onAuthStateChanged(function(user) {
+                        if(user) {
+                            firebase.firestore().collection('users').doc(user.uid).update({
+                                room: room,
+                            }).then(
+                                firebase.firestore().collection('rooms').doc(room).set({
+                                room: room,
+                                key: key,
+                                name: name,
+                                isHide: isHide
+                            })).then(function() {
+                                window.location.href = "/room.html";
+                            });
+                        }
+                    })
+                return false;
+            })
+            $('#reload').click(function(e){
+                socket.emit('loadRooms');
+            })
+            $('#leave').click(function(e){
+                    $('#createRoom').hide();
+            })
+            $('#leave2').click(function(e){
+                    $('#keyUI').hide();
+            })
+        })
+    </script>
+</body>
+
+</html>

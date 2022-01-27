@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-Hant-TW" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/roomStyle.css" />
+    <title></title>
+</head>
+
+<body>
+    <div id="title"></div>
+    <button id="memberBTN"><p style="writing-mode:vertical-lr;">成員</p></button>
+    <button id="logout">登出</button>
+    <div id="main">
+        <div id="ui"> 
+            <span>成員</span> </p><button type="button" id="leave" class="leave">X</button>
+            <ul id="members" class="list"></ul>
+            <!--<button class="btn">WIN</button>-->
+        </div>
+        <div id="chat">
+            <ul id="messages" class="list"></ul>
+            <form id="form" action="">
+                <input id="input" tabindex="0" autocomplete="off" placeholder="Aa" /><button id="send">送出</button>
+            </form>
+        </div>
+    </div>
+    <div id="loader">
+        <div id="loaderAni"></div>
+        <div id="loaderText"></div>
+        
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+    <script>
+        var mBTN = document.getElementById("memberBTN");
+        var lBTN = document.getElementById("leave");
+            
+        var ui = document.getElementById("ui");
+        document.getElementById("leave").style.display = "none";
+        var isOpen = false;
+            
+            
+        mBTN.onclick = function(){
+            ui.style.cssText =' display: flex;width: 300px;position: absolute;animation: fadein 0.5s cubic-bezier(0.5, -0.6, 1, 1.2);';
+            isOpen = true;
+            document.getElementById("leave").style.display = "";
+        }
+        lBTN.onclick = function(){
+            ui.style.cssText =' display: ""';
+            isOpen = false;
+        }
+        
+        
+    </script>
+</body>
+
+</html>
