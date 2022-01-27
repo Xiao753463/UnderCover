@@ -1,0 +1,417 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Shippori+Mincho:wght@800&display=swap');
+
+body {
+    background-image: url("../bg.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    display:flex;
+    justify-content:center;
+    font-family: 'Noto Sans TC', sans-serif;
+
+    animation: repeatImg 4s linear infinite;
+}
+@keyframes repeatImg {
+    from { background-position: left 100%; }
+    to { background-position: left 0; }
+  }
+#title{
+    color: black !important;
+}
+#keyUI{
+    z-index: 10;
+}
+span{
+    font-size: 22pt;
+    margin-bottom: 20px;
+}
+#reload,.leave{
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    outline: none;
+    color: rgb(255, 243, 0);
+    background-color: rgb(0, 148, 255);
+    padding: 2px 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#reload:hover,.leave:hover{
+    transform: scale(1.02);
+}
+.leave{
+    padding: 4px 7px;
+    color: white;
+}
+#createRoom{
+    z-index: 10;
+}
+#createRoom span{
+    color: rgb(0, 148, 255);
+}
+#createRoom p{
+    background-color: white;
+    border: none;
+}
+#createRoom div{
+    margin:0;
+    height: 20%;
+}
+#createRoom input[type="text"]{
+    border-width: 0 0 3px 0;
+    box-shadow: 0px 5px 8px -1px rgba(0,20,150,0.23);
+}
+.checkBox{
+    background-color: #cfcfcf;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+.checkBox :hover, .checkedBox :hover{
+    transform: scale(1.02);
+
+}
+.lock {
+    background-color: #2dcc70;
+    font-weight: bold;
+    font-size: 11pt;
+    padding: 3px 8px;
+    color: white;
+}
+.hide {
+    background-color: #3d3d3d;
+    font-weight: bold;
+    font-size: 11pt;
+    padding: 3px 8px;
+    color: white;
+    animation: hide 0.3s linear;
+}
+@keyframes hide {
+    from { background-color: #cfcfcf;color:#cfcfcf }
+}
+label.password {
+    left: 120px !important;
+}
+.ajax {
+    min-width: 380px;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 32%;
+    top: 20%;
+    height: 380px;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 10px 18px -1px rgba(0,20,150,0.43);
+}
+.ajax div {
+        position: relative;
+        margin: 0 0 -5% 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 25%;
+    }
+label {
+    position: absolute;
+    padding: 0 0.5rem;
+    top: 35%;
+    left: 20%;
+    cursor: pointer;
+    color:gray;
+    transition: top 150ms ease-in, left 150ms ease-in, font-size 150ms ease-in;
+    background-color: white;
+}
+input[type="text"]:hover ~ label {
+    font-size: 15pt;
+    top: 32%;
+    left: 45px;
+}
+input[type="text"]:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+    input[type="text"]:focus ~ label {
+        top: 10%;
+        font-size: 0.6rem;
+        left: 20%;
+    }
+input[type="text"]:hover {
+    transform: scale(1.05);
+    font-size: 12pt;
+    transition-property: transform;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
+}
+input[type="text"]:not(:placeholder-shown) ~ label {
+    top: 10%;
+    font-size: 0.6rem;
+    left: 20%;
+}
+input[type="text"] {
+    min-width: 200px;
+    cursor: pointer;
+    width: 70%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 0 0.8rem;
+    font-size: 12pt;
+    transition-property: transform;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
+}
+
+input[type="password"]:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+input[type="password"]:hover ~ label {
+    font-size: 15pt;
+    top: 32%;
+    left: 50px;
+}
+    input[type="password"]:focus ~ label {
+        top: 13%;
+        font-size: 0.6rem;
+        left: 20%;
+    }
+
+input[type="password"]:not(:placeholder-shown) ~ label {
+    top: 10%;
+    font-size: 0.6rem;
+    left: 20%;
+}
+input[type="password"] {
+    min-width: 200px;
+    cursor: pointer;
+    width: 70%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 0 0.8rem;
+    font-size: 12pt;
+    transition-property: transform;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
+}
+#id{
+    font-size: 10pt;
+}
+#key,#room, #croom{
+    min-width: 80px;
+    width: 40%;
+    text-align: center;
+}
+#room ~label,#key ~label,#croom ~label{
+    
+    left: 40%;
+}
+#key:focus ~ label,#room:focus ~ label,#croom ~label ~ label {
+    left: 42.5%;
+}
+
+#key:not(:placeholder-shown) ~ label,#room:not(:placeholder-shown) ~ label,#croom:not(:placeholder-shown) ~ label {
+    left: 42.5%;
+}
+.eyes{
+    
+    position: absolute;
+    width: 18px;
+    right: 20%;
+
+}
+.btn {
+    min-width: 100px;
+    position: relative;
+    border-radius: 5px;
+    border-width: 0px;
+    color: white;
+    background-color: rgb(0, 148, 255);
+    font-size: 14pt;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8%;
+    width: 22%;
+    height: 10%;
+    box-shadow: rgba(0,0,0,0.4) 1px 1px;
+    transition-property: all;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
+}
+    .btn:before {
+        content: " ";
+        border-radius: 5px;
+        border-width: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(250, 18, 60);
+        transition: transform 0.5s;
+        transition-timing-function:cubic-bezier(0.5,1.6,0.4,0.75);
+        transform-origin: 0 0;
+        transform: scaleX(0);
+        z-index: -1;
+    }
+    .btn:hover::before {
+        transform: scaleX(1);
+    }
+    .btn:hover {
+        transform: scale(1.1);
+        font-size: 16pt;
+    }
+#roomlist{
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    min-height: 150px;
+    background-color: rgba(0, 148, 255,0.5);
+    box-shadow: 0px 10px 18px -1px rgba(0,20,150,0.23);
+    border: 3px rgba(0,20,150,0.23) solid;
+    margin-bottom: 5px;
+    justify-content: space-between;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    z-index:1;
+    
+}
+#main span{
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    color: rgb(255, 243, 0);
+    z-index: 0;
+}
+p{
+    padding: 1px 5px;
+    margin: -25px 0 2px 0;
+    border-radius: 8px;
+    border: 5px rgb(0, 148, 255) solid;
+    background-color:rgb(0, 148, 255);
+}
+.roomBTN{
+    padding: 0%;
+    height: 100px;
+    width: 10%;
+    font-size: 12pt;
+    margin: 5PX  10px 5px;
+    background-color: white;
+    color: rgb(0, 148, 255);
+    box-shadow: 0px 5px 8px -1px rgba(0,20,150,0.43);
+}
+.roomBTN:hover{
+    color: white;
+}
+.roomBTN p{
+    width: 100%;
+    position: absolute;
+    font-size: 8pt;
+    color: white;
+    border: none;
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    top: 0;
+    margin: 0;
+    padding: 5px 0;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.btn2 {
+    min-width: 90px;
+    position: relative;
+    border-radius: 5px;
+    border-width: 0px;
+    color: white;
+    background-color: rgb(0, 148, 255);
+    font-size: 6pt;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 3%;
+    width: 20%;
+    height: 7%;
+    box-shadow: rgba(0,0,0,0.4) 1px 1px;
+    transition-property: all;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
+}
+    #r_btn::after{
+        
+        content: "還沒有帳號嗎?";
+    }
+    #r_btn:hover::after{
+        content: " ";
+    }
+    #r_btn::before{
+        content: " 立即註冊";
+    }
+    #l_btn::after{
+        
+        content: "已有帳號";
+    }
+    #l_btn:hover::after{
+        content: " ";
+    }
+    #l_btn::before{
+        content: " 立即登入";
+    }
+    .btn2:before {
+        font-size: 12pt;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        border-radius: 5px;
+        border-width: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(250, 18, 60);
+        transition: transform 0.5s;
+        transition-timing-function:cubic-bezier(0.5,1.6,0.4,0.75);
+        transform-origin: 0 0;
+        transform: scaleX(0);
+        z-index: -1;
+    }
+    .btn2:hover::before {
+        transform: scaleX(1);
+    }
+    .btn2:hover {
+        transform: scale(1.1);
+        font-size: 8pt;
+    }
+    @media screen and (orientation:portrait) { 
+        .eyes{
+    
+            position: absolute;
+            width: 22px;
+            right: 5%;
+        
+        }
+        #key,#room {
+            width: 120px;
+        }
+        #key ~label,#room ~label{
+    
+            left: 38%;
+        }
+        #roomlist{
+            width: 80%;
+        }
+      }
