@@ -1,0 +1,6 @@
+[1201/115649.920:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[1201/115650.144:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[1201/115650.346:ERROR:gpu_init.cc(441)] Passthrough is not supported, GL is disabled
+[1201/115726.932:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[1201/115727.152:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[1201/115727.371:ERROR:gpu_init.cc(441)] Passthrough is not supported, GL is disabled
